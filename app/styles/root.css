@@ -1,0 +1,57 @@
+/* Colors taken from radix-ui colors https://www.radix-ui.com/colors */
+:root {
+  --accent: hsl(24, 94.5%, 64.3%); /*orange8 */
+  --onAccent: hsl(0 0% 9%); /*gray12 */
+  --background: hsl(0 0% 99%); /* gray1 */
+  --onBackground: hsl(0 0% 9%); /*gray12 */
+  --link: hsl(208 100% 47.3%); /*blue10*/
+  --linkVisited: hsl(250 43% 48%); /* violet11*/
+  transition: color 500ms, background-color 500ms;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --accent: hsl(25, 100%, 29%); /* orange8*/
+    --onAccent: hsl(0, 0%, 93%); /* gray12 */
+    --background: hsl(0, 0%, 8.5%); /*gray1 */
+    --onBackground: hsl(0, 0%, 93%); /* gray12 */
+    --link: hsl(209, 100%, 60.6%); /*blue10*/
+    --linkVisited: hsl(250, 95%, 76.8%); /* violet11*/
+  }
+}
+
+.light {
+  --accent: hsl(24, 94.5%, 64.3%); /*orange8 */
+  --onAccent: hsl(0 0% 9%); /*gray12 */
+  --background: hsl(0 0% 99%); /* gray1 */
+  --onBackground: hsl(0 0% 9%); /*gray12 */
+  --link: hsl(208 100% 47.3%); /*blue10*/
+  --linkVisited: hsl(250 43% 48%); /* violet11*/
+}
+
+.dark {
+  --accent: hsl(25, 100%, 29%); /* orange8*/
+  --onAccent: hsl(0, 0%, 93%); /* gray12 */
+  --background: hsl(0, 0%, 8.5%); /*gray1 */
+  --onBackground: hsl(0, 0%, 93%); /* gray12 */
+  --link: hsl(209, 100%, 60.6%); /*blue10*/
+  --linkVisited: hsl(250, 95%, 76.8%); /* violet11*/
+}
+
+html {
+  background-color: var(--background);
+  color: var(--onBackground);
+}
+
+button {
+  background-color: var(--accent);
+  color: var(--onAccent);
+}
+
+a {
+  color: var(--link);
+}
+
+a:visited {
+  color: var(--linkVisited);
+}
