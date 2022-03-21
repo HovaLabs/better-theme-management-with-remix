@@ -1,9 +1,11 @@
 /* Colors taken from radix-ui colors https://www.radix-ui.com/colors */
 :root {
-  --primary: hsl(24, 100%, 75.3%); /* orange7 */
+  --primary: #ffb381; /* orange7 */
   --onPrimary: hsl(0 0% 9%); /* gray12 */
   --background: hsl(0 0% 99%); /* gray1 */
   --onBackground: hsl(0 0% 9%); /* gray12 */
+  --surface: hsl(0, 0%, 93%); /* gray4 */
+  --onSurface: hsl(0 0% 9%); /* gray12 */
   --link: hsl(208 100% 47.3%); /* blue10 */
   --linkVisited: hsl(250 43% 48%); /* violet11 */
 
@@ -16,16 +18,20 @@
     --onPrimary: hsl(0, 0%, 93%); /* gray12 */
     --background: hsl(0, 0%, 8.5%); /* gray1 */
     --onBackground: hsl(0, 0%, 93%); /* gray12 */
+    --surface: hsl(0, 0%, 15.8%); /* gray4 */
+    --onSurface: hsl(0, 0%, 93%); /* gray12 */
     --link: hsl(209, 100%, 60.6%); /* blue10 */
     --linkVisited: hsl(250, 95%, 76.8%); /* violet11 */
   }
 }
 
 .light {
-  --primary: hsl(24, 100%, 75.3%); /* orange7 */
+  --primary: #ffb381; /* orange7 */
   --onPrimary: hsl(0 0% 9%); /* gray12 */
   --background: hsl(0 0% 99%); /* gray1 */
   --onBackground: hsl(0 0% 9%); /* gray12 */
+  --surface: hsl(0, 0%, 93%); /* gray4 */
+  --onSurface: hsl(0 0% 9%); /* gray12 */
   --link: hsl(208 100% 47.3%); /* blue10 */
   --linkVisited: hsl(250 43% 48%); /* violet11 */
 }
@@ -35,6 +41,8 @@
   --onPrimary: hsl(0, 0%, 93%); /* gray12 */
   --background: hsl(0, 0%, 8.5%); /* gray1 */
   --onBackground: hsl(0, 0%, 93%); /* gray12 */
+  --surface: hsl(0, 0%, 15.8%); /* gray4 */
+  --onSurface: hsl(0, 0%, 93%); /* gray12 */
   --link: hsl(209, 100%, 60.6%); /* blue10 */
   --linkVisited: hsl(250, 95%, 76.8%); /* violet11 */
 }
@@ -42,11 +50,14 @@
 html {
   background-color: var(--background);
   color: var(--onBackground);
+  font-family: system-ui, sans-serif;
+  line-height: 1.4;
 }
 
 body {
   max-width: 600px;
   margin: 0 auto;
+  padding: min(32px, 5vw);
 }
 
 button {
@@ -60,4 +71,14 @@ a {
 
 a:visited {
   color: var(--linkVisited);
+}
+
+pre {
+  padding: min(16px, 2.5vw);
+  max-width: 100%;
+  overflow: auto;
+  color: var(--onSurface);
+  background: var(--surface);
+  border: 1px solid var(--onSurface);
+  border-radius: 5px;
 }

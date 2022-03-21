@@ -1,37 +1,10 @@
 # Remix Perfect Dark Mode
 
-Check out the live site [here](https://remix-perfect-dark-mode.netlify.app).
+Check out an explanation of the code and the live site [here](https://remix-perfect-dark-mode.netlify.app).
 
-This repo is a minimal example of how to set up a Remix app with light/dark mode. The site defaults to the OS's theme preferences (light/dark theme) while also allowing the user to override it, manually. The user's setting is stored in a cookie 🍪.
+This repo is a minimal example of how to set up a [Remix](https://remix.run/) app with light/dark mode.
 
-No flash, no fuss, just good clean theming fun.
-
-## Project Inspiration
-
-This project is inspired by Josh Comeau's blog post "[The Quest for the Perfect Dark Mode](https://www.joshwcomeau.com/react/dark-mode/)". With Remix, we can take the core UX and DX concerns addressed in this blog post to the next level by utilizing cookies instead of localStorage.
-
-# Setting up the styles
-
-In [/app/styles/root.css](/app/styles/root.css) we set up four nearly identical set of css variables.
-
-- :root - We default to light mode
-- @media (prefers-color-scheme: dark) - If the device prefers dark mode, we update the css variables
-- .light - Any div with the class `.light` will overwrite the css variables with light themed colors
-- .dark - Any div with the class `.dark` will overwrite the css variables with dark themed colors
-
-By setting css variables in the order described above, we can allow for common sense default colors, and still allow for manually overriding the theme.
-
-# Setting the theme cookie
-
-TODO
-
-# Retrieving the theme cookie
-
-TODO
-
-# bUt ThIs IsN't PeRfEcT!!!1
-
-You're probably right. Sorry you got click bait'd by the title, but we'd love your feedback if there's a way we can improve this minimalist example. [We're open to PR's.](https://github.com/HovaLabs/remix-perfect-dark-mode/issues/new)
+# Notes on developing and deploying this app
 
 ## Netlify Setup
 
