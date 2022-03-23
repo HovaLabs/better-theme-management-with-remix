@@ -82,3 +82,11 @@ pre {
   border: 1px solid var(--onSurface);
   border-radius: 5px;
 }
+
+img {
+  width: 100%;
+  height: auto;
+  border: 1px solid var(--onBackground);
+  border-radius: 5px;
+  overflow: hidden;
+}

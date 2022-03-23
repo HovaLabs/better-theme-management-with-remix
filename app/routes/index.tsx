@@ -70,12 +70,12 @@ export default function Index() {
         <a href="https://www.joshwcomeau.com/react/dark-mode/">
           The Quest for the Perfect Dark Mode
         </a>
-        . In his blog post, the goal is to set up a Gatsby/NextJS-style app.
-        With Remix, we can take the solution to the next level by utilizing
-        cookies instead of localStorage. Regardless of whether we're using
-        cookies or localStorage, let's talk about our customer's requirements.
-        Apologies for the copy/pasting, Josh, but your list of requirements are
-        too perfect to not re-use.
+        . In his blog post, the goal is to set up a Gatsby/NextJS-style app with
+        light/dark mode themed colors. With Remix, we can take the solution to
+        the next level by utilizing cookies instead of localStorage. Regardless
+        of whether we're using cookies or localStorage, we should talk about our
+        customer's requirements. Apologies for the copy/pasting, Josh, but your
+        list of requirements are too perfect to not re-use.
       </p>
       <h2>Our requirements</h2>
       <p>Here's our set of criteria for this feature:</p>
@@ -102,13 +102,7 @@ export default function Index() {
       <p>Let's reimagine these requirements as a flow diagram:</p>
       <img
         alt="requirements-flow-diagram"
-        style={{
-          width: "100%",
-          height: "auto",
-          border: "1px solid black",
-          borderRadius: 5,
-          overflow: "hidden",
-        }}
+        className="flow-diagram"
         src={flowDiagram}
       />
       <h2>

@@ -15,6 +15,7 @@ import {
 import { userPrefs } from "~/cookies";
 import type { LinksFunction, MetaFunction } from "remix";
 import styles from "./styles/root.css";
+import favicon from "~/media/favicon.png";
 
 export const meta: MetaFunction = () => ({
   charset: "utf-8",
@@ -23,7 +24,10 @@ export const meta: MetaFunction = () => ({
 });
 
 export const links: LinksFunction = () => {
-  return [{ rel: "stylesheet", href: styles }];
+  return [
+    { rel: "stylesheet", href: styles },
+    { rel: "icon", href: favicon },
+  ];
 };
 
 export const action: ActionFunction = async ({ request }) => {
