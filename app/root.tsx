@@ -1,5 +1,4 @@
 import {
-  json,
   ActionFunction,
   Form,
   Links,
@@ -51,25 +50,38 @@ export const action: ActionFunction = async ({ request }) => {
   });
 };
 
-export const loader: LoaderFunction = async ({ request }) => {
+type Theme = "light" | "dark" | undefined;
+interface LoaderData {
+  theme: Theme;
+}
+
+export const loader: LoaderFunction = async ({
+  request,
+}): Promise<LoaderData> => {
   const cookieHeader = request.headers.get("Cookie");
   const cookie = (await userPrefs.parse(cookieHeader)) || {};
-  return json(cookie);
+  const theme: Theme =
+    cookie.theme === "light"
+      ? "light"
+      : cookie.theme === "dark"
+      ? "dark"
+      : undefined;
+  return { theme };
 };
 
 export default function App() {
-  const cookie = useLoaderData<any>();
-  const setThemeTo = (cookie?.theme ?? "light") === "light" ? "dark" : "light";
+  const { theme } = useLoaderData<LoaderData>();
+  const setThemeTo = theme === "light" ? "dark" : "light";
 
   return (
-    <html lang="en" className={cookie.theme ?? undefined}>
+    <html lang="en" className={theme}>
       <head>
         <Meta />
         <Links />
       </head>
       <body>
         <div>
-          <h1>The Perfect Dark Mode</h1>
+          <h1>Perfect Dark Mode with Remix</h1>
           <div style={{ display: "flex" }}>
             <Form method="post">
               <input type="hidden" name="theme" value={setThemeTo} />
