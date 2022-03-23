@@ -48,26 +48,37 @@ export default function Index() {
         <li>
           <a
             target="_blank"
+            rel="noopener noreferrer"
             href="https://github.com/HovaLabs/remix-perfect-dark-mode/"
-            rel="noreferrer"
           >
             Check out the code on Github
           </a>
         </li>
         <li>
-          <a target="_blank" href="https://remix.run/docs" rel="noreferrer">
+          <a
+            target="_blank"
+            rel="noopener noreferrer"
+            href="https://remix.run/docs"
+          >
             Remix Docs
           </a>
         </li>
       </ul>
       <p>
         This site is a minimal example of how to set up a{" "}
-        <a href="https://remix.run/">Remix</a> app with light/dark mode.
+        <a target="_blank" rel="noopener noreferrer" href="https://remix.run/">
+          Remix
+        </a>{" "}
+        app with light/dark mode.
       </p>
       <h2>Project Inspiration</h2>
       <p>
         This project is inspired by Josh Comeau's blog post{" "}
-        <a href="https://www.joshwcomeau.com/react/dark-mode/">
+        <a
+          target="_blank"
+          rel="noopener noreferrer"
+          href="https://www.joshwcomeau.com/react/dark-mode/"
+        >
           The Quest for the Perfect Dark Mode
         </a>
         . In his blog post, the goal is to set up a Gatsby/NextJS-style app with
@@ -107,7 +118,13 @@ export default function Index() {
       />
       <h2>
         Setting up the styles in{" "}
-        <a href="/app/styles/root.css">/app/styles/root.css</a>
+        <a
+          target="_blank"
+          rel="noopener noreferrer"
+          href="https://github.com/HovaLabs/remix-perfect-dark-mode/blob/master/app/styles/root.css"
+        >
+          /app/styles/root.css
+        </a>
       </h2>
       <p>
         In order to meet the requirements described above, we set up two sets of
@@ -234,17 +251,35 @@ export default function App() {
       </pre>
       <h2>That's it</h2>
       <p>
-        Hope you enjoyed this post. Please check out the actual code, as I
-        believe it does a much better job than some of the broken-out
+        Hope you enjoyed this post. Please check out{" "}
+        <a
+          target="_blank"
+          rel="noopener noreferrer"
+          href="https://github.com/hovalabs/remix-perfect-dark-mode"
+        >
+          the actual code
+        </a>
+        , as I believe it does a much better job than some of the broken-out
         code-snippets shown earler. If there's a way we can improve the example
         or supporting notes, we'd love your feedback.{" "}
-        <a href="https://github.com/HovaLabs/remix-perfect-dark-mode/issues/new">
+        <a
+          target="_blank"
+          rel="noopener noreferrer"
+          href="https://github.com/HovaLabs/remix-perfect-dark-mode/issues/new"
+        >
           We're open to PR's.
         </a>
       </p>
       <h2>Thanks for reading</h2>
       <p>
-        ❤️ <a href="https://hovalabs.com">The Hovas</a>
+        ❤️{" "}
+        <a
+          target="_blank"
+          rel="noopener noreferrer"
+          href="https://hovalabs.com"
+        >
+          The Hovas
+        </a>
       </p>
     </div>
   );
