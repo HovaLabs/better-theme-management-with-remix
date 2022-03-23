@@ -44,26 +44,7 @@ export const meta: MetaFunction = () => {
 export default function Index() {
   return (
     <div>
-      <ul>
-        <li>
-          <a
-            target="_blank"
-            rel="noopener noreferrer"
-            href="https://github.com/HovaLabs/remix-perfect-dark-mode/"
-          >
-            Check out the code on Github
-          </a>
-        </li>
-        <li>
-          <a
-            target="_blank"
-            rel="noopener noreferrer"
-            href="https://remix.run/docs"
-          >
-            Remix Docs
-          </a>
-        </li>
-      </ul>
+      <div style={{ height: 16 }} />
       <p>
         This site is a minimal example of how to set up a{" "}
         <a target="_blank" rel="noopener noreferrer" href="https://remix.run/">
@@ -71,6 +52,13 @@ export default function Index() {
         </a>{" "}
         app with light/dark mode.
       </p>
+      <a
+        target="_blank"
+        rel="noopener noreferrer"
+        href="https://github.com/HovaLabs/remix-perfect-dark-mode/"
+      >
+        Check out the code on Github
+      </a>
       <h2>Project Inspiration</h2>
       <p>
         This project is inspired by Josh Comeau's blog post{" "}
@@ -81,12 +69,13 @@ export default function Index() {
         >
           The Quest for the Perfect Dark Mode
         </a>
-        . In his blog post, the goal is to set up a Gatsby/NextJS-style app with
-        light/dark mode themed colors. With Remix, we can take the solution to
-        the next level by utilizing cookies instead of localStorage. Regardless
-        of whether we're using cookies or localStorage, we should talk about our
-        customer's requirements. Apologies for the copy/pasting, Josh, but your
-        list of requirements are too perfect to not re-use.
+        . In that blog post, the goal is to talk about strategy and motivation
+        for setting up a Gatsby/NextJS-style app with light/dark mode themed
+        colors. With Remix, we have similar goals, and we can take the solution
+        to the next level by utilizing cookies instead of localStorage.
+        Regardless of whether we're using cookies or localStorage, we should
+        talk about our customer's requirements. Apologies for the copy/pasting,
+        Josh, but your list of requirements are too perfect to not re-use.
       </p>
       <h2>Our requirements</h2>
       <p>Here's our set of criteria for this feature:</p>
@@ -110,7 +99,7 @@ export default function Index() {
         </li>
         <li>The site should never show the wrong toggle state.</li>
       </ul>
-      <p>Let's reimagine these requirements as a flow diagram:</p>
+      <p>Let's reimagine these requirements as a "Theme Decision Tree":</p>
       <img
         alt="requirements-flow-diagram"
         className="flow-diagram"
@@ -223,8 +212,9 @@ export const action: ActionFunction = async ({ request }) => {
       <p>
         When the user clicks on the "Toggle Theme" button, a form is submitted,
         which replies with a cookie. On any future visits to the site, this
-        cookie will be sent, which will allow the server to set a "light" or
-        "dark" class on the {`<html />`} element returned to the user's browser.
+        cookie will be sent to the server, which will allow it to set a "light"
+        or "dark" class on the {`<html />`} element returned to the user's
+        browser.
       </p>
       <h2>Retrieving the theme cookie</h2>
       <p>
@@ -240,10 +230,10 @@ export const action: ActionFunction = async ({ request }) => {
 };
 
 export default function App() {
-  const cookie = useLoaderData<any>();
+  const { theme } = useLoaderData<{ theme?: string }>();
 
   return (
-    <html lang="en" className={cookie.theme ?? undefined}>
+    <html lang="en" className={theme}>
       ...
     </html>
   );
@@ -257,7 +247,7 @@ export default function App() {
           rel="noopener noreferrer"
           href="https://github.com/hovalabs/remix-perfect-dark-mode"
         >
-          the actual code
+          the code
         </a>
         , as I believe it does a much better job than some of the broken-out
         code-snippets shown earler. If there's a way we can improve the example
