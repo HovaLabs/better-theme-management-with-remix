@@ -1,5 +1,6 @@
 import { MetaFunction } from "remix";
 import flowDiagram from "../media/flow-diagram.png";
+import metaImage from "../media/meta.jpg";
 
 const title = "Perfect Light / Dark Mode with Remix";
 const description =
@@ -32,12 +33,12 @@ export const meta: MetaFunction = () => {
     author: "The Hovas",
     title,
     "og:title": title,
-    "og:image": flowDiagram,
+    "og:image": metaImage,
     "twitter:card": "summary",
     "twitter:title": title,
     "twitter:image:width": "1200",
     "twitter:image:height": "630",
-    "twitter:image": flowDiagram,
+    "twitter:image": metaImage,
   };
 };
 
