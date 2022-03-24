@@ -72,7 +72,7 @@ export const loader: LoaderFunction = async ({
 
 export default function App() {
   const { theme } = useLoaderData<LoaderData>();
-  const setThemeTo = theme === "light" ? "dark" : "light";
+  const setThemeTo = theme === "dark" ? "light" : "dark";
 
   return (
     <html lang="en" className={theme}>
