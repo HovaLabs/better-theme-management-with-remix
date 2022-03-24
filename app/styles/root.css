@@ -8,8 +8,6 @@
   --onSurface: hsl(0 0% 9%); /* gray12 */
   --link: hsl(208 100% 47.3%); /* blue10 */
   --linkVisited: hsl(250 43% 48%); /* violet11 */
-
-  transition: color 500ms, background-color 500ms;
 }
 
 @media (prefers-color-scheme: dark) {
