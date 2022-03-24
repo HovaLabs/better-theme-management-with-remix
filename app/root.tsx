@@ -60,12 +60,11 @@ export const loader: LoaderFunction = async ({
 }): Promise<LoaderData> => {
   const cookieHeader = request.headers.get("Cookie");
   const cookie = (await userPrefs.parse(cookieHeader)) || {};
-  const theme: Theme =
-    cookie.theme === "light"
-      ? "light"
-      : cookie.theme === "dark"
-      ? "dark"
-      : undefined;
+  let theme = cookie.theme;
+  if (theme !== "light" && theme !== "dark") {
+    // Cast theme to "undefined" if it's an unsupported value
+    theme = undefined;
+  }
   return { theme };
 };
 
@@ -81,7 +80,7 @@ export default function App() {
       </head>
       <body>
         <div>
-          <h1>Perfect Dark Mode with Remix</h1>
+          <h1>Perfect Light / Dark Mode with Remix</h1>
           <div style={{ display: "flex" }}>
             <Form method="post">
               <input type="hidden" name="theme" value={setThemeTo} />

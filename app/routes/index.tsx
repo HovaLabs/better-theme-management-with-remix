@@ -1,7 +1,7 @@
 import { MetaFunction } from "remix";
 import flowDiagram from "../media/flow-diagram.png";
 
-const title = "Perfect Dark Mode with Remix";
+const title = "Perfect Light / Dark Mode with Remix";
 const description =
   "How to set up your Remix app to use light and dark mode themes";
 
@@ -33,7 +33,7 @@ export const meta: MetaFunction = () => {
     title,
     "og:title": title,
     "og:image": flowDiagram,
-    "twitter:card": "TODO",
+    "twitter:card": "summary",
     "twitter:title": title,
     "twitter:image:width": "1200",
     "twitter:image:height": "630",
@@ -69,11 +69,10 @@ export default function Index() {
         >
           The Quest for the Perfect Dark Mode
         </a>
-        . In that blog post, the goal is to talk about strategy and motivation
-        for setting up a Gatsby/NextJS-style app with light/dark mode themed
-        colors. With Remix, we have similar goals, and we can take the solution
-        to the next level by utilizing cookies instead of localStorage.
-        Regardless of whether we're using cookies or localStorage, we should
+        . That blog post discusses the motivation and strategy for setting up a
+        Gatsby/NextJS-style app with light/dark mode themed colors. With Remix,
+        we have similar goals, but we can easily utilize cookies instead of
+        localStorage. Whether we're using cookies or localStorage, we should
         talk about our customer's requirements. Apologies for the copy/pasting,
         Josh, but your list of requirements are too perfect to not re-use.
       </p>
@@ -155,8 +154,9 @@ export default function Index() {
       </p>
       <h2>Setting up the theme cookie</h2>
       <p>
-        To set up a cookie where we can store the user's theme preference, we're
-        going to use Remix's `createCookie` API
+        We're going to use a cookie to "remember" if a browser has set a
+        preferred theme. To set up our cookie we're going to use Remix's
+        "createCookie" API.
       </p>
       <pre>
         {`// app/cookies.ts
@@ -168,7 +168,7 @@ export const userPrefs = createCookie("userPrefs", {
       </pre>
       <h2>Setting the cookie value</h2>
       <p>
-        In order to set the cookie value, we're going to use a form and
+        In order to set the cookie's theme value, we're going to use a form and
         corresponding action handler.
       </p>
       <p>Here's the form:</p>
@@ -183,7 +183,7 @@ import { Form } from 'remix';
   <button type="submit">Toggle Theme</button>
 </Form>`}
       </pre>
-      <p>And here's the action handler:</p>
+      <p>And here's the matching action handler:</p>
       <pre>
         {`import { ActionFunction } from 'remix';
 import { userPrefs } from '~/cookie';
@@ -210,7 +210,7 @@ export const action: ActionFunction = async ({ request }) => {
 };`}
       </pre>
       <p>
-        When the user clicks on the "Toggle Theme" button, a form is submitted,
+        When a user clicks on the "Toggle Theme" button, a form is submitted,
         which replies with a cookie. On any future visits to the site, this
         cookie will be sent to the server, which will allow it to set a "light"
         or "dark" class on the {`<html />`} element returned to the user's
@@ -223,18 +223,39 @@ export const action: ActionFunction = async ({ request }) => {
         declaration.
       </p>
       <pre>
-        {`export const loader: LoaderFunction = async ({ request }) => {
+        {`import { Form, useLoaderData } from "remix";
+import type { LoaderFunction } from "remix";
+
+type Theme = "light" | "dark" | undefined;
+interface LoaderData {
+  theme: Theme;
+}
+
+export const loader: LoaderFunction = async ({
+  request,
+}): Promise<LoaderData> => {
   const cookieHeader = request.headers.get("Cookie");
   const cookie = (await userPrefs.parse(cookieHeader)) || {};
-  return json(cookie);
+  let theme = cookie.theme;
+  if (theme !== "light" && theme !== "dark") {
+    // Cast theme to "undefined" if it's an unsupported value
+    theme = undefined;
+  }
+  return { theme };
 };
 
 export default function App() {
-  const { theme } = useLoaderData<{ theme?: string }>();
+  const { theme } = useLoaderData<LoaderData>();
+  const setThemeTo = theme === "light" ? "dark" : "light";
 
   return (
     <html lang="en" className={theme}>
-      ...
+      <body>
+        <Form method="post">
+          <input type="hidden" name="theme" value={setThemeTo} />
+          <button type="submit">Toggle Theme</button>
+        </Form>
+      </body>
     </html>
   );
 }`}
@@ -247,7 +268,7 @@ export default function App() {
           rel="noopener noreferrer"
           href="https://github.com/hovalabs/remix-perfect-dark-mode"
         >
-          the code
+          the actual code
         </a>
         , as I believe it does a much better job than some of the broken-out
         code-snippets shown earler. If there's a way we can improve the example
