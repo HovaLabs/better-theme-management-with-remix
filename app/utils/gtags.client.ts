@@ -1,5 +1,4 @@
-export const GA_TRACKING_ID = "GTM-P8MBCWC";
-
+import * as constants from "~/constants";
 declare global {
   interface Window {
     gtag: (
@@ -21,7 +20,7 @@ export const pageview = (url: string) => {
     );
     return;
   }
-  window.gtag("config", GA_TRACKING_ID, {
+  window.gtag("config", constants.GA_TRACKING_ID, {
     page_path: url,
   });
 };
