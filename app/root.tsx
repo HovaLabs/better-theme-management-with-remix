@@ -1,4 +1,3 @@
-import * as React from "react";
 import {
   ActionFunction,
   Form,
@@ -11,13 +10,13 @@ import {
   Scripts,
   ScrollRestoration,
   useLoaderData,
-  useLocation,
 } from "remix";
 import { userPrefs } from "~/cookies";
-import type { LinksFunction, MetaFunction } from "remix";
-import styles from "./styles/root.css";
 import favicon from "~/media/favicon.png";
-import * as gtag from "~/utils/gtags.client";
+import styles from "~/styles/root.css";
+import GoogleAnalytics from "~/utils/GoogleAnalytics";
+
+import type { LinksFunction, MetaFunction } from "remix";
 
 export const meta: MetaFunction = () => ({
   charset: "utf-8",
@@ -75,12 +74,6 @@ export default function App() {
   const { theme } = useLoaderData<LoaderData>();
   const setThemeTo = theme === "light" ? "dark" : "light";
 
-  const location = useLocation();
-
-  React.useEffect(() => {
-    gtag.pageview(location.pathname);
-  }, [location]);
-
   return (
     <html lang="en" className={theme}>
       <head>
@@ -88,28 +81,7 @@ export default function App() {
         <Links />
       </head>
       <body>
-        {process.env.NODE_ENV !== "development" ? (
-          <>
-            <script
-              async
-              src={`https://www.googletagmanager.com/gtag/js?id=${gtag.GA_TRACKING_ID}`}
-            />
-            <script
-              async
-              id="gtag-init"
-              dangerouslySetInnerHTML={{
-                __html: `
-                window.dataLayer = window.dataLayer || [];
-                function gtag(){dataLayer.push(arguments);}
-                gtag('js', new Date());
-                gtag('config', '${gtag.GA_TRACKING_ID}', {
-                  page_path: window.location.pathname,
-                });
-              `,
-              }}
-            />
-          </>
-        ) : null}
+        <GoogleAnalytics />
         <div>
           <h1>Perfect Light / Dark Mode with Remix</h1>
           <div style={{ display: "flex" }}>
