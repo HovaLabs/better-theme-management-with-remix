@@ -100,11 +100,13 @@ export default function Index() {
         <li>The site should never show the wrong toggle state.</li>
       </ul>
       <p>Let's reimagine these requirements as a "Theme Decision Tree":</p>
-      <img
-        alt="requirements-flow-diagram"
-        className="flow-diagram"
-        src={flowDiagram}
-      />
+      <div className="flow-diagram-wrapper">
+        <img
+          alt="requirements-flow-diagram"
+          className="flow-diagram"
+          src={flowDiagram}
+        />
+      </div>
       <h2>
         Setting up the styles in{" "}
         <a
