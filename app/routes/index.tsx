@@ -139,7 +139,7 @@ export default function Index() {
         </a>
       </h2>
       <p>
-        In order to meet the requirements described above, we set up two sets of
+        In order to meet the requirements described above, we create two sets of
         two identical lists of css variables. In addition, we'll create one
         class per each custom theme we want to support.
       </p>
@@ -229,8 +229,8 @@ export const {
         >
           response-compliant payload
         </a>
-        In this case, when a user clicks on the "Toggle Theme" button, a form is
-        submitted, which the action handler will reply to with the new theme
+        . In this case, when a user clicks on the "Toggle Theme" button, a form
+        is submitted, which the action handler will reply to with the new theme
         value, baked into a cookie.
       </p>
       <p>Here's the form:</p>
@@ -270,10 +270,6 @@ export const action: ActionFunction = async ({ request }) => {
 };
 `}
       </pre>
-      <p>
-        , which will allow it to set a "light", "dark", or "christmas" class on
-        the {`<html />`} element returned to the user's browser.
-      </p>
       <h2>Retrieving the theme cookie</h2>
       <p>
         When a user visits the site, they will send to the server a cookie.
@@ -300,11 +296,11 @@ export const loader: LoaderFunction = async ({
       </pre>
       <h2>Consuming the cookie value in the browser</h2>
       <p>
-        We're going a bit full-circle here. Now that userLoaderData has parsed
-        our cookie, we can use the combination of the cookie value and the OS's
-        current theme to determine what value the toggle should fire when
-        clicked. In addition to submitting the form, we also optimistically
-        update the state locally.
+        We're going a bit full-circle here. Now that the loader function has
+        parsed our cookie, we can use the combination of the cookie value and
+        the OS's current theme to determine what value the toggle should fire
+        when clicked. In addition to submitting the form, we also optimistically
+        update the state locally so that the theme update is instantaneous.
       </p>
       <pre>
         {`
