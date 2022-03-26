@@ -8,6 +8,12 @@ This repo is a minimal example of how to set up a [Remix](https://remix.run/) ap
 
 ## Netlify Setup
 
+0. Install dependencies
+
+```sh
+npm i
+```
+
 1. Install the [Netlify CLI](https://www.netlify.com/products/dev/):
 
 ```sh

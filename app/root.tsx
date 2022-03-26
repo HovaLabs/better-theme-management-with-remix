@@ -16,7 +16,7 @@ import { userPrefs } from "~/cookies";
 import favicon from "~/media/favicon.png";
 import styles from "~/styles/root.css";
 import GoogleAnalytics from "~/utils/GoogleAnalytics";
-import { Theme, useTheme, nullishStringToTheme } from "./theme";
+import { ThemeName, useThemeName, nullishStringToThemeName } from "./theme";
 
 import type { LinksFunction, MetaFunction } from "remix";
 
@@ -37,7 +37,7 @@ export const action: ActionFunction = async ({ request }) => {
   const cookieHeader = request.headers.get("Cookie");
   const cookie = (await userPrefs.parse(cookieHeader)) || {};
   const bodyParams = await request.formData();
-  const theme = nullishStringToTheme(bodyParams.get("theme")?.toString());
+  const theme = nullishStringToThemeName(bodyParams.get("theme")?.toString());
   cookie.theme = theme ?? null;
 
   return redirect("/", {
@@ -48,7 +48,7 @@ export const action: ActionFunction = async ({ request }) => {
 };
 
 interface LoaderData {
-  theme: Theme | undefined;
+  themeName: ThemeName | undefined;
 }
 
 export const loader: LoaderFunction = async ({
@@ -56,25 +56,23 @@ export const loader: LoaderFunction = async ({
 }): Promise<LoaderData> => {
   const cookieHeader = request.headers.get("Cookie");
   const cookie = (await userPrefs.parse(cookieHeader)) || {};
-  let theme = nullishStringToTheme(cookie.theme);
-  return { theme };
+  let themeName = nullishStringToThemeName(cookie.theme);
+  return { themeName };
 };
 
 export default function App() {
-  const { theme: cookieTheme } = useLoaderData<LoaderData>();
-  const { theme, setTheme, osTheme } = useTheme(cookieTheme);
+  const { themeName: cookieThemeName } = useLoaderData<LoaderData>();
+  const { themeName, setThemeName, osThemeName } =
+    useThemeName(cookieThemeName);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     const form = new FormData(e.target as HTMLFormElement);
-    const newTheme = nullishStringToTheme(form.get("theme")?.toString());
-    console.log({ newTheme });
-    setTheme(newTheme);
+    const newTheme = nullishStringToThemeName(form.get("theme")?.toString());
+    setThemeName(newTheme);
   };
 
-  console.log({ theme, osTheme });
-
   return (
-    <html lang="en" className={theme}>
+    <html lang="en" className={themeName}>
       <head>
         <Meta />
         <Links />
@@ -88,7 +86,7 @@ export default function App() {
               <input
                 type="hidden"
                 name="theme"
-                value={(theme ?? osTheme) === "dark" ? "light" : "dark"}
+                value={(themeName ?? osThemeName) === "dark" ? "light" : "dark"}
               />
               <button type="submit">Toggle Theme</button>
             </Form>
@@ -99,8 +97,8 @@ export default function App() {
             </Form>
             <div style={{ width: 32 }} />
             <Form method="post" onSubmit={handleSubmit}>
-              <input type="hidden" name="theme" value="pink" />
-              <button type="submit">Enable Pink Theme!</button>
+              <input type="hidden" name="theme" value="christmas" />
+              <button type="submit">Enable Christmas Theme!</button>
             </Form>
           </div>
         </div>

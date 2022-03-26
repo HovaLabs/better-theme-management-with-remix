@@ -1,59 +1,59 @@
 /* Colors taken from radix-ui colors https://www.radix-ui.com/colors */
 :root {
-  --primary: #ffb381; /* orange7 */
+  --primary: hsl(24, 94.5%, 64.3%); /* orange8 */
   --onPrimary: hsl(0 0% 9%); /* gray12 */
   --background: hsl(0 0% 99%); /* gray1 */
   --onBackground: hsl(0 0% 9%); /* gray12 */
-  --surface: hsl(0, 0%, 93%); /* gray4 */
-  --onSurface: hsl(0 0% 9%); /* gray12 */
+  --code: hsl(0, 0%, 93%); /* gray4 */
+  --onCode: hsl(0 0% 9%); /* gray12 */
   --link: hsl(208 100% 47.3%); /* blue10 */
   --linkVisited: hsl(250 43% 48%); /* violet11 */
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --primary: hsl(24, 92.4%, 24%); /* orange7 */
+    --primary: hsl(25, 100%, 29%); /* orange8 */
     --onPrimary: hsl(0, 0%, 93%); /* gray12 */
     --background: hsl(0, 0%, 8.5%); /* gray1 */
     --onBackground: hsl(0, 0%, 93%); /* gray12 */
-    --surface: hsl(0, 0%, 15.8%); /* gray4 */
-    --onSurface: hsl(0, 0%, 93%); /* gray12 */
+    --code: hsl(0, 0%, 15.8%); /* gray4 */
+    --onCode: hsl(0, 0%, 93%); /* gray12 */
     --link: hsl(209, 100%, 60.6%); /* blue10 */
     --linkVisited: hsl(250, 95%, 76.8%); /* violet11 */
   }
 }
 
 .light {
-  --primary: #ffb381; /* orange7 */
+  --primary: hsl(24, 94.5%, 64.3%); /* orange8 */
   --onPrimary: hsl(0 0% 9%); /* gray12 */
   --background: hsl(0 0% 99%); /* gray1 */
   --onBackground: hsl(0 0% 9%); /* gray12 */
-  --surface: hsl(0, 0%, 93%); /* gray4 */
-  --onSurface: hsl(0 0% 9%); /* gray12 */
+  --code: hsl(0, 0%, 93%); /* gray4 */
+  --onCode: hsl(0 0% 9%); /* gray12 */
   --link: hsl(208 100% 47.3%); /* blue10 */
   --linkVisited: hsl(250 43% 48%); /* violet11 */
 }
 
 .dark {
-  --primary: hsl(24, 92.4%, 24%); /* orange7 */
+  --primary: hsl(25, 100%, 29%); /* orange8 */
   --onPrimary: hsl(0, 0%, 93%); /* gray12 */
   --background: hsl(0, 0%, 8.5%); /* gray1 */
   --onBackground: hsl(0, 0%, 93%); /* gray12 */
-  --surface: hsl(0, 0%, 15.8%); /* gray4 */
-  --onSurface: hsl(0, 0%, 93%); /* gray12 */
+  --code: hsl(0, 0%, 15.8%); /* gray4 */
+  --onCode: hsl(0, 0%, 93%); /* gray12 */
   --link: hsl(209, 100%, 60.6%); /* blue10 */
   --linkVisited: hsl(250, 95%, 76.8%); /* violet11 */
 }
 
-.pink {
-  --primary: #ffb381;
-  --onPrimary: hsl(0 0% 9%);
-  --background: pink;
-  --onBackground: hsl(0 0% 9%);
-  --surface: hsl(0, 0%, 93%);
-  --onSurface: hsl(0 0% 9%);
-  --link: hsl(208 100% 47.3%);
-  --linkVisited: hsl(250 43% 48%);
+.christmas {
+  --primary: #aa2222;
+  --onPrimary: #ffffff;
+  --background: #228822;
+  --onBackground: #ffffff;
+  --code: #662222;
+  --onCode: #ffffff;
+  --link: #ffff00;
+  --linkVisited: #aaffff;
 }
 
 html {
@@ -86,9 +86,9 @@ pre {
   padding: min(16px, 2.5vw);
   max-width: 100%;
   overflow: auto;
-  color: var(--onSurface);
-  background: var(--surface);
-  border: 1px solid var(--onSurface);
+  color: var(--onCode);
+  background: var(--code);
+  border: 1px solid var(--onCode);
   border-radius: 5px;
 }
 

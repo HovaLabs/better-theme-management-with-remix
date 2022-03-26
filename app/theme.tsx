@@ -1,6 +1,10 @@
-import createThemeUtils from "./createThemeUtils";
+import createThemeHelper from "react-theme-helper";
 
-export const { useTheme, ThemeContext, ThemeProvider, nullishStringToTheme } =
-  createThemeUtils(["light", "dark", "pink"]);
+export const {
+  useThemeName,
+  ThemeContext, // Not using this one yet
+  ThemeProvider,
+  nullishStringToThemeName,
+} = createThemeHelper(["light", "dark", "christmas"]);
 
-export type Theme = ReturnType<typeof useTheme>["theme"];
+export type ThemeName = ReturnType<typeof useThemeName>["themeName"];
