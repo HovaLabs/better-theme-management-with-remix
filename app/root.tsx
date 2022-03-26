@@ -17,7 +17,8 @@ import favicon from "~/media/favicon.png";
 import faviconDark from "~/media/favicon-dark.png";
 import styles from "~/styles/root.css";
 import GoogleAnalytics from "~/components/GoogleAnalytics";
-import { ThemeName, useThemeName, nullishStringToThemeName } from "./theme";
+import { ThemeName, useThemeName, nullishStringToThemeName } from "~/theme";
+import * as constants from "~/constants";
 
 import type { LinksFunction, MetaFunction } from "remix";
 
@@ -82,7 +83,7 @@ export default function App() {
       <body>
         <GoogleAnalytics />
         <div>
-          <h1>Perfect Themes with Remix</h1>
+          <h1>{constants.TITLE}</h1>
           <div style={{ display: "flex" }}>
             <Form method="post" onSubmit={handleSubmit}>
               <input

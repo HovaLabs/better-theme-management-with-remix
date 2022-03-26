@@ -2,8 +2,8 @@ import { MetaFunction } from "remix";
 import flowDiagram from "../media/flow-diagram.png";
 import metaImage from "../media/meta.jpg";
 import Link from "~/components/Link";
+import * as constants from "~/constants";
 
-const title = "Perfect Themes with Remix";
 const description =
   "How to set up your Remix app to use light, dark, and custom themes";
 
@@ -33,13 +33,14 @@ export const meta: MetaFunction = () => {
       "react-theme-helper",
       "javascript",
       "typescript",
+      constants.TITLE,
     ].join(", "),
     author: "The Hovas",
-    title,
-    "og:title": title,
+    title: constants.TITLE,
+    "og:title": constants.TITLE,
     "og:image": metaImage,
     "twitter:card": "summary",
-    "twitter:title": title,
+    "twitter:title": constants.TITLE,
     "twitter:image:width": "1200",
     "twitter:image:height": "630",
     "twitter:image": metaImage,
@@ -54,7 +55,7 @@ export default function Index() {
         <Link href="https://remix.run/">Remix</Link> app with light, dark, and
         custom themes.
       </p>
-      <Link href="https://github.com/HovaLabs/remix-perfect-themes/">
+      <Link href="https://github.com/HovaLabs/remix-theme-management/">
         Check out the code on Github
       </Link>
       <h1>Our requirements</h1>
@@ -347,13 +348,13 @@ export default function App() {
       <h1>That's it</h1>
       <p>
         Hope you enjoyed this post. Please check out{" "}
-        <Link href="https://github.com/hovalabs/remix-perfect-themes">
+        <Link href="https://github.com/hovalabs/remix-theme-management">
           the actual code
         </Link>
         , as I believe it provides a much more realistic context. If there's a
         way we can improve the example or supporting notes, we'd love your
         feedback.{" "}
-        <Link href="https://github.com/HovaLabs/remix-perfect-themes/issues/new">
+        <Link href="https://github.com/HovaLabs/remix-theme-management/issues/new">
           We're open to PR's.
         </Link>
       </p>

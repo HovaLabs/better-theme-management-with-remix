@@ -1,6 +1,6 @@
-# Remix Perfect Themes
+# Remix theme management
 
-Check out an explanation of the code and the live site [here](https://remix-perfect-themes.netlify.app/).
+Check out an explanation of the code and the live site [here](https://remix-theme-management.netlify.app/).
 
 This repo is a minimal example of how to set up a [Remix](https://remix.run/) app with light/dark/custom themes.
 
