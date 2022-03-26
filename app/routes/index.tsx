@@ -53,7 +53,7 @@ export default function Index() {
       <p>
         This site is a minimal example of how to set up a{" "}
         <Link href="https://remix.run/">Remix</Link> app with light, dark, and
-        custom themes. Although we're sticking to vanilla css. The concepts
+        custom themes. Although we're sticking to vanilla css, the concepts
         covered here apply to css frameworks such as Tailwind, style-components,
         etc...
       </p>
