@@ -45,6 +45,17 @@
   --linkVisited: hsl(250, 95%, 76.8%); /* violet11 */
 }
 
+.pink {
+  --primary: #ffb381;
+  --onPrimary: hsl(0 0% 9%);
+  --background: pink;
+  --onBackground: hsl(0 0% 9%);
+  --surface: hsl(0, 0%, 93%);
+  --onSurface: hsl(0 0% 9%);
+  --link: hsl(208 100% 47.3%);
+  --linkVisited: hsl(250 43% 48%);
+}
+
 html {
   background-color: var(--background);
   color: var(--onBackground);

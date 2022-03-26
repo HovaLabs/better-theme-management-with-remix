@@ -1,3 +1,4 @@
+import * as React from "react";
 import {
   ActionFunction,
   Form,
@@ -15,6 +16,7 @@ import { userPrefs } from "~/cookies";
 import favicon from "~/media/favicon.png";
 import styles from "~/styles/root.css";
 import GoogleAnalytics from "~/utils/GoogleAnalytics";
+import { Theme, useTheme, nullishStringToTheme } from "./theme";
 
 import type { LinksFunction, MetaFunction } from "remix";
 
@@ -35,15 +37,8 @@ export const action: ActionFunction = async ({ request }) => {
   const cookieHeader = request.headers.get("Cookie");
   const cookie = (await userPrefs.parse(cookieHeader)) || {};
   const bodyParams = await request.formData();
-
-  const theme = bodyParams.get("theme");
-  if (theme === "light") {
-    cookie.theme = "light";
-  } else if (theme === "dark") {
-    cookie.theme = "dark";
-  } else if (theme === "") {
-    cookie.theme = null;
-  }
+  const theme = nullishStringToTheme(bodyParams.get("theme")?.toString());
+  cookie.theme = theme ?? null;
 
   return redirect("/", {
     headers: {
@@ -52,9 +47,8 @@ export const action: ActionFunction = async ({ request }) => {
   });
 };
 
-type Theme = "light" | "dark" | undefined;
 interface LoaderData {
-  theme: Theme;
+  theme: Theme | undefined;
 }
 
 export const loader: LoaderFunction = async ({
@@ -62,17 +56,22 @@ export const loader: LoaderFunction = async ({
 }): Promise<LoaderData> => {
   const cookieHeader = request.headers.get("Cookie");
   const cookie = (await userPrefs.parse(cookieHeader)) || {};
-  let theme = cookie.theme;
-  if (theme !== "light" && theme !== "dark") {
-    // Cast theme to "undefined" if it's an unsupported value
-    theme = undefined;
-  }
+  let theme = nullishStringToTheme(cookie.theme);
   return { theme };
 };
 
 export default function App() {
-  const { theme } = useLoaderData<LoaderData>();
-  const setThemeTo = theme === "dark" ? "light" : "dark";
+  const { theme: cookieTheme } = useLoaderData<LoaderData>();
+  const { theme, setTheme, osTheme } = useTheme(cookieTheme);
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    const form = new FormData(e.target as HTMLFormElement);
+    const newTheme = nullishStringToTheme(form.get("theme")?.toString());
+    console.log({ newTheme });
+    setTheme(newTheme);
+  };
+
+  console.log({ theme, osTheme });
 
   return (
     <html lang="en" className={theme}>
@@ -85,14 +84,23 @@ export default function App() {
         <div>
           <h1>Perfect Light / Dark Mode with Remix</h1>
           <div style={{ display: "flex" }}>
-            <Form method="post">
-              <input type="hidden" name="theme" value={setThemeTo} />
+            <Form method="post" onSubmit={handleSubmit}>
+              <input
+                type="hidden"
+                name="theme"
+                value={(theme ?? osTheme) === "dark" ? "light" : "dark"}
+              />
               <button type="submit">Toggle Theme</button>
             </Form>
             <div style={{ width: 32 }} />
-            <Form method="post">
+            <Form method="post" onSubmit={handleSubmit}>
               <input type="hidden" name="theme" value={""} />
               <button type="submit">Reset Theme Cookie</button>
+            </Form>
+            <div style={{ width: 32 }} />
+            <Form method="post" onSubmit={handleSubmit}>
+              <input type="hidden" name="theme" value="pink" />
+              <button type="submit">Enable Pink Theme!</button>
             </Form>
           </div>
         </div>
