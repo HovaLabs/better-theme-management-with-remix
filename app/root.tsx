@@ -14,6 +14,7 @@ import {
 } from "remix";
 import { userPrefs } from "~/cookies";
 import favicon from "~/media/favicon.png";
+import faviconDark from "~/media/favicon-dark.png";
 import styles from "~/styles/root.css";
 import GoogleAnalytics from "~/utils/GoogleAnalytics";
 import { ThemeName, useThemeName, nullishStringToThemeName } from "./theme";
@@ -29,7 +30,8 @@ export const meta: MetaFunction = () => ({
 export const links: LinksFunction = () => {
   return [
     { rel: "stylesheet", href: styles },
-    { rel: "icon", href: favicon },
+    { rel: "icon", href: favicon, media: "(prefers-color-scheme: light)" },
+    { rel: "icon", href: faviconDark, media: "(prefers-color-scheme: dark)" },
   ];
 };
 
@@ -48,7 +50,7 @@ export const action: ActionFunction = async ({ request }) => {
 };
 
 interface LoaderData {
-  themeName: ThemeName | undefined;
+  themeName: ThemeName;
 }
 
 export const loader: LoaderFunction = async ({
@@ -80,7 +82,7 @@ export default function App() {
       <body>
         <GoogleAnalytics />
         <div>
-          <h1>Perfect Light / Dark Mode with Remix</h1>
+          <h1>Perfect Themes with Remix</h1>
           <div style={{ display: "flex" }}>
             <Form method="post" onSubmit={handleSubmit}>
               <input
@@ -88,17 +90,19 @@ export default function App() {
                 name="theme"
                 value={(themeName ?? osThemeName) === "dark" ? "light" : "dark"}
               />
-              <button type="submit">Toggle Theme</button>
-            </Form>
-            <div style={{ width: 32 }} />
-            <Form method="post" onSubmit={handleSubmit}>
-              <input type="hidden" name="theme" value={""} />
-              <button type="submit">Reset Theme Cookie</button>
+              <button className="toggle" type="submit">
+                Toggle Theme
+              </button>
             </Form>
             <div style={{ width: 32 }} />
             <Form method="post" onSubmit={handleSubmit}>
               <input type="hidden" name="theme" value="christmas" />
               <button type="submit">Enable Christmas Theme!</button>
+            </Form>
+            <div style={{ width: 32 }} />
+            <Form method="post" onSubmit={handleSubmit}>
+              <input type="hidden" name="theme" value={""} />
+              <button type="submit">Reset Theme Cookie</button>
             </Form>
           </div>
         </div>
