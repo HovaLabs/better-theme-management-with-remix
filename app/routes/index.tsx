@@ -57,40 +57,24 @@ export default function Index() {
       <Link href="https://github.com/HovaLabs/remix-perfect-themes/">
         Check out the code on Github
       </Link>
-      <h1>Project Inspiration</h1>
+      <h1>Our requirements</h1>
       <p>
-        This project is inspired by Josh Comeau's blog post{" "}
+        We should talk about our customer's requirements. If you've read{" "}
         <Link href="https://www.joshwcomeau.com/react/dark-mode/">
           The Quest for the Perfect Dark Mode
-        </Link>
-        . If you haven't read it yet, please check it out, as it's a great
-        source of context on this subject with very thorough explanations. That
-        blog post discusses the motivation and strategy for setting up a
-        Gatsby/NextJS-style app with light/dark mode themed colors. This blog
-        post has similar, but slightly different goals.
+        </Link>{" "}
+        this list may look familiar. Apologies for the copy/pasting, Josh, but
+        your list of requirements are too perfect to not re-use.
       </p>
-      <p>
-        1. Instead of NextJS or Gatsby, we want to build our app with Remix,
-        utilizing cookies, instead of localStorage.
-      </p>
-      <p>
-        2. In addition to supporting light/dark mode, we want to support using
-        custom themes. For this blog post, we'll use a "Christmas" theme, but
-        it's worth pointing out, there are much more useful (but not as
-        🎄festive🎄) accessibility-targeted themes such as high-contrast,
-        tritanopia, etc.. which could be implemented following this pattern.
-      </p>
-      <p>
-        We should talk about our customer's requirements. Apologies for the
-        copy/pasting, Josh, but your list of requirements are too perfect to not
-        re-use.
-      </p>
-      <h2>Our requirements</h2>
       <p>Here's our set of criteria for this feature:</p>
       <ul>
         <li>
           The user should be able to click a toggle to switch between light and
           dark mode.
+        </li>
+        <li>
+          ✨New Requirement✨ - The user should be able to select other custom
+          themes as well.
         </li>
         <li>
           The user's preference should be saved, so that future visits use the
@@ -105,10 +89,21 @@ export default function Index() {
           The site should not flicker on first load, even if the user has
           selected a non-default color theme.
         </li>
-        <li>The site should never show the wrong toggle state.</li>
+        <li>The site should never show the wrong theme.</li>
+      </ul>
+      <h2>Some notes about the tech stack</h2>
+      <ul>
         <li>
-          * The site should allow for non-standard themes, and should remember
-          them, if selected.
+          We want to build our app with{" "}
+          <Link href="https://remix.run">Remix</Link> and utilize cookies to
+          remember our user's theme preference.
+        </li>
+        <li>
+          In addition to supporting light/dark mode, we want to support using
+          custom themes. For this blog post, we'll use a "Christmas" theme, but
+          it's worth pointing out, there are much more useful (but not as
+          🎄festive🎄) accessibility-targeted themes which could be implemented
+          following this pattern.
         </li>
       </ul>
       <p>Let's reimagine these requirements as a "Theme Decision Tree":</p>
@@ -119,16 +114,13 @@ export default function Index() {
           src={flowDiagram}
         />
       </div>
-      <h2>
-        Setting up the styles in{" "}
-        <Link href="https://github.com/HovaLabs/remix-perfect-themes/blob/master/app/styles/root.css">
-          /app/styles/root.css
-        </Link>
-      </h2>
+      <h1>The CSS</h1>
       <p>
         In order to meet the requirements described above, we create two sets of
-        two identical lists of css variables. In addition, we'll create one
-        class per each custom theme we want to support.
+        light and dark mode css variables. The first set is for handling default
+        behavior, and the second set is for handling when the user manually
+        selects a theme. In addition, we'll create one class per each custom
+        theme we want to support.
       </p>
       <pre>
         {`/* Default to a light theme */
@@ -163,11 +155,11 @@ export default function Index() {
 }`}
       </pre>
       <p>
-        By declaring our css variables in the order described above, we've set
-        up our css to do everything we've described in our requirements. Our
-        site will look great and automatically match the OS's light/dark theme
-        preference. But we still need to do some work to allow for the user to
-        manually modify the theme, and for the site to remember this decision.
+        By declaring css variables in the order described above, we've set up
+        the css to meet our requirements. By default, the site will
+        automatically match the OS's light/dark theme preference. We still need
+        to do some work to allow the user to manually modify the theme, and for
+        the site to remember this decision.
       </p>
       <h2>Setting up the theme cookie</h2>
       <p>
@@ -183,25 +175,34 @@ export const userPrefs = createCookie("userPrefs", {
   maxAge: 31_536_000, // one year
 });`}
       </pre>
-      <h2>react-theme-helper</h2>
+      <h1>Using react-theme-helper</h1>
       <p>
         To smooth out our implementation, we've created a helper package, called{" "}
         <Link href="https://github.com/HovaLabs/react-theme-helper">
           react-theme-helper
-        </Link>{" "}
-        which we will use for keeping track of the OS's theme state, as well as
-        our user-selected theme state.
+        </Link>
+        . This package exposes two helper functions:
       </p>
       <pre>
         {`// app/theme.tsx
 import createThemeHelper from "react-theme-helper";
 
 export const {
-  useThemeName,
   nullishStringToThemeName,
+  useThemeName,
 } = createThemeHelper(["light", "dark", "christmas"]);`}
       </pre>
-      <h2>Setting the cookie value</h2>
+      <p>
+        <b>nullishStringToThemeName</b> coerces a string into one of our themes.
+        If the string doesn't match any of our theme values, it will return
+        undefined. We can use this function on the frontend and the backend.
+      </p>
+      <p>
+        <b>useThemeName</b> is a react hook that will provide the user-selected
+        theme, the os's current them, and a function to update the user-selected
+        theme.
+      </p>
+      <h1>Setting the theme by submitting a form</h1>
       <p>
         Remix allows each route to have an action handler, which can reply with
         a{" "}
@@ -249,7 +250,11 @@ export const action: ActionFunction = async ({ request }) => {
 };
 `}
       </pre>
-      <h2>Retrieving the theme cookie</h2>
+      <p>
+        Any future requests for this site from the browser will include this
+        cookie.
+      </p>
+      <h1>Serving the website</h1>
       <p>
         When a user visits the site, they will send to the server a cookie.
         Here's how we can parse that cookie.
@@ -273,7 +278,7 @@ export const loader: LoaderFunction = async ({
   return { themeName };
 };`}
       </pre>
-      <h2>Consuming the cookie value in the browser</h2>
+      <h1>Setting up the theme toggle</h1>
       <p>
         We're going a bit full-circle here. Now that the loader function has
         parsed our cookie, we can use the combination of the cookie value and
@@ -314,7 +319,7 @@ export default function App() {
   );
 }`}
       </pre>
-      <h2>Setting a custom theme</h2>
+      <h1>Setting a custom theme</h1>
       <p>
         To allow setting and unsetting a custom theme, we've added two
         additional forms, with a hidden input's value set to "christmas" and "",
@@ -330,7 +335,7 @@ export default function App() {
   <button type="submit">Reset Theme</button>
 </Form>`}
       </pre>
-      <h2>What's still missing</h2>
+      <h1>What's still missing</h1>
       <p>
         You may notice there's no way for the server-rendered html to detect
         light/dark mode unless a cookie is set. We're able to avoid the dreaded
@@ -339,7 +344,7 @@ export default function App() {
         to render content differently for light/dark mode and could not achieve
         the result with css media queries, we would need to hack a bit further.
       </p>
-      <h2>That's it</h2>
+      <h1>That's it</h1>
       <p>
         Hope you enjoyed this post. Please check out{" "}
         <Link href="https://github.com/hovalabs/remix-perfect-themes">
