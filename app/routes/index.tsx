@@ -58,7 +58,7 @@ export default function Index() {
       <a
         target="_blank"
         rel="noopener noreferrer"
-        href="https://github.com/HovaLabs/remix-perfect-dark-mode/"
+        href="https://github.com/HovaLabs/remix-perfect-themes/"
       >
         Check out the code on Github
       </a>
@@ -133,7 +133,7 @@ export default function Index() {
         <a
           target="_blank"
           rel="noopener noreferrer"
-          href="https://github.com/HovaLabs/remix-perfect-dark-mode/blob/master/app/styles/root.css"
+          href="https://github.com/HovaLabs/remix-perfect-themes/blob/master/app/styles/root.css"
         >
           /app/styles/root.css
         </a>
@@ -370,7 +370,7 @@ export default function App() {
         <a
           target="_blank"
           rel="noopener noreferrer"
-          href="https://github.com/hovalabs/remix-perfect-dark-mode"
+          href="https://github.com/hovalabs/remix-perfect-themes"
         >
           the actual code
         </a>
@@ -380,7 +380,7 @@ export default function App() {
         <a
           target="_blank"
           rel="noopener noreferrer"
-          href="https://github.com/HovaLabs/remix-perfect-dark-mode/issues/new"
+          href="https://github.com/HovaLabs/remix-perfect-themes/issues/new"
         >
           We're open to PR's.
         </a>
