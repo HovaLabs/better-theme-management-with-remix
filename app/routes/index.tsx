@@ -62,7 +62,7 @@ export default function Index() {
       </Link>
       <h1>Our requirements</h1>
       <p>
-        We should talk about our customer's requirements. If you've read{" "}
+        Let's start with our requirements. If you've read{" "}
         <Link href="https://www.joshwcomeau.com/react/dark-mode/">
           The Quest for the Perfect Dark Mode
         </Link>{" "}
