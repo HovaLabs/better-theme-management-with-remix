@@ -16,7 +16,7 @@ import { userPrefs } from "~/cookies";
 import favicon from "~/media/favicon.png";
 import faviconDark from "~/media/favicon-dark.png";
 import styles from "~/styles/root.css";
-import GoogleAnalytics from "~/utils/GoogleAnalytics";
+import GoogleAnalytics from "~/components/GoogleAnalytics";
 import { ThemeName, useThemeName, nullishStringToThemeName } from "./theme";
 
 import type { LinksFunction, MetaFunction } from "remix";
@@ -30,7 +30,7 @@ export const meta: MetaFunction = () => ({
 export const links: LinksFunction = () => {
   return [
     { rel: "stylesheet", href: styles },
-    { rel: "icon", href: favicon, media: "(prefers-color-scheme: light)" },
+    { rel: "icon", href: favicon },
     { rel: "icon", href: faviconDark, media: "(prefers-color-scheme: dark)" },
   ];
 };

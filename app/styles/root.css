@@ -60,6 +60,7 @@ html {
   background-color: var(--background);
   color: var(--onBackground);
   font-family: system-ui, sans-serif;
+  font-size: 100%;
   line-height: 1.4;
 }
 

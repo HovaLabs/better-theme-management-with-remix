@@ -1,4 +1,5 @@
 import * as constants from "~/constants";
+
 declare global {
   interface Window {
     gtag: (

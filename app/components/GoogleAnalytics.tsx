@@ -1,13 +1,13 @@
 import * as React from "react";
 import { useLocation } from "remix";
-import * as gtag from "./gtags.client";
+import * as analytics from "~/utils/analytics.client";
 import * as constants from "~/constants";
 
 export default function GoogleAnalytics() {
   const location = useLocation();
 
   React.useEffect(() => {
-    gtag.pageview(location.pathname);
+    analytics.pageview(location.pathname);
   }, [location]);
 
   if (process.env.NODE_ENV === "development") {

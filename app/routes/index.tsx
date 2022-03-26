@@ -1,6 +1,7 @@
 import { MetaFunction } from "remix";
 import flowDiagram from "../media/flow-diagram.png";
 import metaImage from "../media/meta.jpg";
+import Link from "~/components/Link";
 
 const title = "Perfect Themes with Remix";
 const description =
@@ -50,28 +51,18 @@ export default function Index() {
     <div>
       <p>
         This site is a minimal example of how to set up a{" "}
-        <a target="_blank" rel="noopener noreferrer" href="https://remix.run/">
-          Remix
-        </a>{" "}
-        app with light, dark, and custom themes.
+        <Link href="https://remix.run/">Remix</Link> app with light, dark, and
+        custom themes.
       </p>
-      <a
-        target="_blank"
-        rel="noopener noreferrer"
-        href="https://github.com/HovaLabs/remix-perfect-themes/"
-      >
+      <Link href="https://github.com/HovaLabs/remix-perfect-themes/">
         Check out the code on Github
-      </a>
-      <h2>Project Inspiration</h2>
+      </Link>
+      <h1>Project Inspiration</h1>
       <p>
         This project is inspired by Josh Comeau's blog post{" "}
-        <a
-          target="_blank"
-          rel="noopener noreferrer"
-          href="https://www.joshwcomeau.com/react/dark-mode/"
-        >
+        <Link href="https://www.joshwcomeau.com/react/dark-mode/">
           The Quest for the Perfect Dark Mode
-        </a>
+        </Link>
         . If you haven't read it yet, please check it out, as it's a great
         source of context on this subject with very thorough explanations. That
         blog post discusses the motivation and strategy for setting up a
@@ -130,13 +121,9 @@ export default function Index() {
       </div>
       <h2>
         Setting up the styles in{" "}
-        <a
-          target="_blank"
-          rel="noopener noreferrer"
-          href="https://github.com/HovaLabs/remix-perfect-themes/blob/master/app/styles/root.css"
-        >
+        <Link href="https://github.com/HovaLabs/remix-perfect-themes/blob/master/app/styles/root.css">
           /app/styles/root.css
-        </a>
+        </Link>
       </h2>
       <p>
         In order to meet the requirements described above, we create two sets of
@@ -199,13 +186,9 @@ export const userPrefs = createCookie("userPrefs", {
       <h2>react-theme-helper</h2>
       <p>
         To smooth out our implementation, we've created a helper package, called{" "}
-        <a
-          target="_blank"
-          rel="noopener noreferrer"
-          href="https://github.com/HovaLabs/react-theme-helper"
-        >
+        <Link href="https://github.com/HovaLabs/react-theme-helper">
           react-theme-helper
-        </a>{" "}
+        </Link>{" "}
         which we will use for keeping track of the OS's theme state, as well as
         our user-selected theme state.
       </p>
@@ -222,13 +205,9 @@ export const {
       <p>
         Remix allows each route to have an action handler, which can reply with
         a{" "}
-        <a
-          target="_blank"
-          rel="noopener noreferrer"
-          href="https://developer.mozilla.org/en-US/docs/Web/API/Response"
-        >
+        <Link href="https://developer.mozilla.org/en-US/docs/Web/API/Response">
           response-compliant payload
-        </a>
+        </Link>
         . In this case, when a user clicks on the "Toggle Theme" button, a form
         is submitted, which the action handler will reply to with the new theme
         value, baked into a cookie.
@@ -363,34 +342,19 @@ export default function App() {
       <h2>That's it</h2>
       <p>
         Hope you enjoyed this post. Please check out{" "}
-        <a
-          target="_blank"
-          rel="noopener noreferrer"
-          href="https://github.com/hovalabs/remix-perfect-themes"
-        >
+        <Link href="https://github.com/hovalabs/remix-perfect-themes">
           the actual code
-        </a>
+        </Link>
         , as I believe it provides a much more realistic context. If there's a
         way we can improve the example or supporting notes, we'd love your
         feedback.{" "}
-        <a
-          target="_blank"
-          rel="noopener noreferrer"
-          href="https://github.com/HovaLabs/remix-perfect-themes/issues/new"
-        >
+        <Link href="https://github.com/HovaLabs/remix-perfect-themes/issues/new">
           We're open to PR's.
-        </a>
+        </Link>
       </p>
       <h2>Thanks for reading</h2>
       <p>
-        ❤️{" "}
-        <a
-          target="_blank"
-          rel="noopener noreferrer"
-          href="https://hovalabs.com"
-        >
-          The Hovas
-        </a>
+        ❤️ <Link href="https://hovalabs.com">The Hovas</Link>
       </p>
     </div>
   );
