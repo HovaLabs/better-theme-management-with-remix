@@ -53,7 +53,9 @@ export default function Index() {
       <p>
         This site is a minimal example of how to set up a{" "}
         <Link href="https://remix.run/">Remix</Link> app with light, dark, and
-        custom themes.
+        custom themes. Although we're sticking to vanilla css. The concepts
+        covered here apply to css frameworks such as Tailwind, style-components,
+        etc...
       </p>
       <Link href="https://github.com/HovaLabs/better-theme-management-with-remix/">
         Check out the code on Github
@@ -200,8 +202,8 @@ export const {
       </p>
       <p>
         <b>useThemeName</b> is a react hook that will provide the user-selected
-        theme, the os's current them, and a function to update the user-selected
-        theme.
+        theme, the os's current theme, and a function to update the
+        user-selected theme.
       </p>
       <h1>Setting the theme by submitting a form</h1>
       <p>
@@ -339,11 +341,12 @@ export default function App() {
       <h1>What's still missing</h1>
       <p>
         You may notice there's no way for the server-rendered html to detect
-        light/dark mode unless a cookie is set. We're able to avoid the dreaded
-        flash by utilizing css media queries, but the server-rendered html
-        remains unaware of the client's theme preference. If we wanted a toggle
-        to render content differently for light/dark mode and could not achieve
-        the result with css media queries, we would need to hack a bit further.
+        light/dark mode unless a cookie is set. We're able to avoid a "first
+        render flash" by utilizing css media queries, but the server-rendered
+        html remains unaware of the client's theme preference. If we wanted a
+        toggle to render content differently for light/dark mode and could not
+        achieve the result with css media queries, we would need to hack a bit
+        further.
       </p>
       <h1>That's it</h1>
       <p>
