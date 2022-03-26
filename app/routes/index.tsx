@@ -55,7 +55,7 @@ export default function Index() {
         <Link href="https://remix.run/">Remix</Link> app with light, dark, and
         custom themes.
       </p>
-      <Link href="https://github.com/HovaLabs/remix-theme-management/">
+      <Link href="https://github.com/HovaLabs/better-theme-management-with-remix/">
         Check out the code on Github
       </Link>
       <h1>Our requirements</h1>
@@ -348,13 +348,13 @@ export default function App() {
       <h1>That's it</h1>
       <p>
         Hope you enjoyed this post. Please check out{" "}
-        <Link href="https://github.com/hovalabs/remix-theme-management">
+        <Link href="https://github.com/hovalabs/better-theme-management-with-remix">
           the actual code
         </Link>
         , as I believe it provides a much more realistic context. If there's a
         way we can improve the example or supporting notes, we'd love your
         feedback.{" "}
-        <Link href="https://github.com/HovaLabs/remix-theme-management/issues/new">
+        <Link href="https://github.com/HovaLabs/better-theme-management-with-remix/issues/new">
           We're open to PR's.
         </Link>
       </p>
