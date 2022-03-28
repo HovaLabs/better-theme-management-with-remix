@@ -40,10 +40,10 @@ export const meta: MetaFunction = () => {
     "og:title": constants.TITLE,
     "og:image": metaImage,
     "twitter:card": "summary",
-    "twitter:title": constants.TITLE,
+    "twitter:title": `${constants.SITE_URL}${constants.TITLE}`,
     "twitter:image:width": "1200",
     "twitter:image:height": "630",
-    "twitter:image": metaImage,
+    "twitter:image": `${constants.SITE_URL}${metaImage}`,
   };
 };
 
