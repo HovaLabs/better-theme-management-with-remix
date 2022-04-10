@@ -106,6 +106,23 @@ html {
 }
 
 body {
+  padding: 0;
+  margin: 0;
+}
+
+header {
+  position: sticky;
+  top: 0;
+  padding: 16px;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  background-color: var(--background);
+  color: var(--onBackground);
+  border-bottom: 2px solid var(--onBackground);
+}
+
+.outlet-container {
   max-width: 640px;
   margin: 0 auto;
   padding: min(32px, 5vw);
@@ -114,6 +131,9 @@ body {
 button {
   background-color: var(--primary);
   color: var(--onPrimary);
+  height: 60px;
+  padding-left: 16px;
+  padding-right: 16px;
 }
 
 a {

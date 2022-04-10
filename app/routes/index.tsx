@@ -50,6 +50,7 @@ export const meta: MetaFunction = () => {
 export default function Index() {
   return (
     <div>
+      <h1>{constants.TITLE}</h1>
       <p>
         This site is a minimal example of how to set up a{" "}
         <Link href="https://remix.run/">Remix</Link> app with light, dark, and
@@ -389,6 +390,7 @@ export default function ThemeToggle() {
 </Form>`}
       </pre>
       <h1>What's still missing</h1>
+      <h2>The server doesn't know the OS's theme preference</h2>
       <p>
         You may notice there's no way for the server-rendered html to detect
         light/dark mode unless a cookie is set. We're able to avoid a "first
@@ -397,6 +399,13 @@ export default function ThemeToggle() {
         toggle to render content differently for light/dark mode and could not
         achieve the result with css media queries, we would need to hack a bit
         further.
+      </p>
+      <h2>We're relying on client hydration for our form</h2>
+      <p>
+        In order to prevent the client from getting redirected when submitting
+        the theme-toggle form, we're making the form submission on client side.
+        Ideally, we should instead submit a form instead of calling{" "}
+        <b>preventDefault</b>.
       </p>
       <h1>That's it</h1>
       <p>

@@ -89,9 +89,12 @@ function App() {
       </head>
       <body>
         <GoogleAnalytics />
-        <h1>{constants.TITLE}</h1>
-        <ThemeToggle />
-        <Outlet />
+        <header>
+          <ThemeToggle />
+        </header>
+        <div className="outlet-container">
+          <Outlet />
+        </div>
         <ScrollRestoration />
         <Scripts />
         <LiveReload />

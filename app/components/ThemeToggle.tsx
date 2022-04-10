@@ -30,7 +30,7 @@ export default function ThemeToggle() {
       <div style={{ width: 32 }} />
       <Form method="post" onSubmit={handleSubmit}>
         <input type="hidden" name="theme" value="christmas" />
-        <button type="submit">Enable Christmas Theme!</button>
+        <button type="submit">Use Christmas Theme</button>
       </Form>
       <div style={{ width: 32 }} />
       <Form method="post" onSubmit={handleSubmit}>
