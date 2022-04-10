@@ -1,4 +1,15 @@
-/* Colors taken from radix-ui colors https://www.radix-ui.com/colors */
+/** Colors taken from radix-ui colors https://www.radix-ui.com/colors */
+
+/** The pattern for declaring theme values is as follows:
+ * 1. Default behavior
+ * 2. Default dark-mode behavior
+ * 3. Class-driven light-mode behavior
+ * 4. Class-driven dark-mode behavior
+ * 5. Class-driven custom theme behavior(s)
+ */
+
+/** COLOR VARIABLES START */
+/** Default color variables */
 :root {
   --primary: hsl(24, 94.5%, 64.3%); /* orange8 */
   --onPrimary: hsl(0 0% 9%); /* gray12 */
@@ -10,6 +21,7 @@
   --linkVisited: hsl(250 43% 48%); /* violet11 */
 }
 
+/** Default dark-mode color variables */
 @media (prefers-color-scheme: dark) {
   :root {
     --primary: hsl(25, 100%, 29%); /* orange8 */
@@ -23,6 +35,7 @@
   }
 }
 
+/** light-mode color variables */
 .light {
   --primary: hsl(24, 94.5%, 64.3%); /* orange8 */
   --onPrimary: hsl(0 0% 9%); /* gray12 */
@@ -34,6 +47,7 @@
   --linkVisited: hsl(250 43% 48%); /* violet11 */
 }
 
+/** dark-mode color variables */
 .dark {
   --primary: hsl(25, 100%, 29%); /* orange8 */
   --onPrimary: hsl(0, 0%, 93%); /* gray12 */
@@ -45,6 +59,7 @@
   --linkVisited: hsl(250, 95%, 76.8%); /* violet11 */
 }
 
+/** custom theme(s) color variables */
 .christmas {
   --primary: #aa2222;
   --onPrimary: #ffffff;
@@ -55,6 +70,32 @@
   --link: #ffff00;
   --linkVisited: #aaffff;
 }
+/** COLOR VARIABLES END */
+
+/** TOGGLE BUTTON START */
+/** Default toggle content */
+button.toggle:after {
+  content: " ☀️";
+}
+/** Default dark-mode toggle content */
+@media (prefers-color-scheme: dark) {
+  button.toggle:after {
+    content: " 🌑";
+  }
+}
+/** light-mode toggle content */
+.light button.toggle:after {
+  content: " ☀️";
+}
+/** dark-mode toggle content */
+.dark button.toggle:after {
+  content: " 🌑";
+}
+/** custom theme(s) toggle content */
+.christmas button.toggle:after {
+  content: " 🎄";
+}
+/** TOGGLE BUTTON END */
 
 html {
   background-color: var(--background);
@@ -73,25 +114,6 @@ body {
 button {
   background-color: var(--primary);
   color: var(--onPrimary);
-}
-
-button.toggle:after {
-  content: " ☀️";
-}
-@media (prefers-color-scheme: dark) {
-  button.toggle:after {
-    content: " 🌑";
-  }
-}
-.light button.toggle:after {
-  content: " ☀️";
-}
-
-.dark button.toggle:after {
-  content: " 🌑";
-}
-.christmas button.toggle:after {
-  content: " 🎄";
 }
 
 a {

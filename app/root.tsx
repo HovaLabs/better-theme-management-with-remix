@@ -1,7 +1,5 @@
-import * as React from "react";
 import {
   ActionFunction,
-  Form,
   Links,
   LiveReload,
   LoaderFunction,
@@ -12,12 +10,19 @@ import {
   ScrollRestoration,
   useLoaderData,
 } from "remix";
+
 import { userPrefs } from "~/cookies";
 import favicon from "~/media/favicon.png";
 import faviconDark from "~/media/favicon-dark.png";
 import styles from "~/styles/root.css";
 import GoogleAnalytics from "~/components/GoogleAnalytics";
-import { ThemeName, useThemeName, nullishStringToThemeName } from "~/theme";
+import {
+  ThemeName,
+  ThemeProvider,
+  useThemeInfo,
+  nullishStringToThemeName,
+} from "~/theme";
+import ThemeToggle from "~/components/ThemeToggle";
 import * as constants from "~/constants";
 
 import type { LinksFunction, MetaFunction } from "remix";
@@ -63,16 +68,18 @@ export const loader: LoaderFunction = async ({
   return { themeName };
 };
 
-export default function App() {
+export default function AppWithContexts() {
   const { themeName: cookieThemeName } = useLoaderData<LoaderData>();
-  const { themeName, setThemeName, osThemeName } =
-    useThemeName(cookieThemeName);
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    const form = new FormData(e.target as HTMLFormElement);
-    const newTheme = nullishStringToThemeName(form.get("theme")?.toString());
-    setThemeName(newTheme);
-  };
+  return (
+    <ThemeProvider themeName={cookieThemeName}>
+      <App />
+    </ThemeProvider>
+  );
+}
+
+function App() {
+  const { themeName } = useThemeInfo();
 
   return (
     <html lang="en" className={themeName}>
@@ -82,31 +89,8 @@ export default function App() {
       </head>
       <body>
         <GoogleAnalytics />
-        <div>
-          <h1>{constants.TITLE}</h1>
-          <div style={{ display: "flex" }}>
-            <Form method="post" onSubmit={handleSubmit}>
-              <input
-                type="hidden"
-                name="theme"
-                value={(themeName ?? osThemeName) === "dark" ? "light" : "dark"}
-              />
-              <button className="toggle" type="submit">
-                Toggle Theme
-              </button>
-            </Form>
-            <div style={{ width: 32 }} />
-            <Form method="post" onSubmit={handleSubmit}>
-              <input type="hidden" name="theme" value="christmas" />
-              <button type="submit">Enable Christmas Theme!</button>
-            </Form>
-            <div style={{ width: 32 }} />
-            <Form method="post" onSubmit={handleSubmit}>
-              <input type="hidden" name="theme" value={""} />
-              <button type="submit">Reset Theme Cookie</button>
-            </Form>
-          </div>
-        </div>
+        <h1>{constants.TITLE}</h1>
+        <ThemeToggle />
         <Outlet />
         <ScrollRestoration />
         <Scripts />

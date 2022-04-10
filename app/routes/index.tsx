@@ -93,6 +93,11 @@ export default function Index() {
           selected a non-default color theme.
         </li>
         <li>The site should never show the wrong theme.</li>
+        <li>
+          ✨Unspoken Bonus Requirement (that we took for granted 😅)✨ - The
+          user's current url should not change, and browser history should not
+          update when the theme is updated.
+        </li>
       </ul>
       <h2>Some notes about the tech stack</h2>
       <ul>
@@ -125,14 +130,28 @@ export default function Index() {
         selects a theme. In addition, we'll create one class per each custom
         theme we want to support.
       </p>
+      <h2>
+        CSS variable pattern<div>☀️ ➡ 🌑 ➡ ☀️ ➡ 🌑 ➡ 🎄</div>
+      </h2>
+
+      <p>When defining our theme's css-variables, we follow this pattern:</p>
+      <ol>
+        <li>Default behavior</li>
+        <li>Default dark-mode behavior</li>
+        <li>Class-driven light-mode behavior</li>
+        <li>Class-driven dark-mode behavior</li>
+        <li>Class-driven custom theme behavior(s)</li>
+      </ol>
       <pre>
-        {`/* Default to a light theme */
+        {`/* app/styles/root.css */
+
+/* 1. Default to a light theme */
 :root {
   --background: white;
   --onBackground: black
 }
 
-/* Overwrite css variables if device prefers dark theme */
+/* 2. Overwrite css variables if device prefers dark theme */
 @media (prefers-color-scheme: dark) {
   :root {
     --background: black;
@@ -140,18 +159,19 @@ export default function Index() {
   }
 }
 
-/* Manually overwrite css variables by setting class="light" */
+/* 3. Manually overwrite css variables by setting class="light" */
 .light {
   --background: white;
   --onBackground: black;
 }
 
-/* Manually overwrite css variables by setting class="dark" */
+/* 4. Manually overwrite css variables by setting class="dark" */
 .dark {
   --background: black;
   --onBackground: white;
 }
 
+/* 5. Manually overwrite css variables by setting class="christmas" */
 .christmas {
   --background: green;
   --onBackground: red;
@@ -159,7 +179,7 @@ export default function Index() {
       </pre>
       <p>
         By declaring css variables in the order described above, we've set up
-        the css to meet our requirements. By default, the site will
+        the css to meet our requirements. The site's default behavior is to
         automatically match the OS's light/dark theme preference. We still need
         to do some work to allow the user to manually modify the theme, and for
         the site to remember this decision.
@@ -180,11 +200,12 @@ export const userPrefs = createCookie("userPrefs", {
       </pre>
       <h1>Using react-theme-helper</h1>
       <p>
-        To smooth out our implementation, we've created a helper package, called{" "}
+        To smooth out our implementation, we've created a utility package,
+        called{" "}
         <Link href="https://github.com/HovaLabs/react-theme-helper">
           react-theme-helper
         </Link>
-        . This package exposes two helper functions:
+        . This package exposes several helper tools as follows:
       </p>
       <pre>
         {`// app/theme.tsx
@@ -192,7 +213,8 @@ import createThemeHelper from "react-theme-helper";
 
 export const {
   nullishStringToThemeName,
-  useThemeName,
+  useThemeInfo,
+  ThemeProvider
 } = createThemeHelper(["light", "dark", "christmas"]);`}
       </pre>
       <p>
@@ -201,9 +223,13 @@ export const {
         undefined. We can use this function on the frontend and the backend.
       </p>
       <p>
-        <b>useThemeName</b> is a react hook that will provide the user-selected
+        <b>useThemeInfo</b> is a react hook that will provide the user-selected
         theme, the os's current theme, and a function to update the
         user-selected theme.
+      </p>
+      <p>
+        <b>ThemeProvider</b> is a React component which provides theme context
+        and holds state for managing optimistic state UI updates.
       </p>
       <h1>Setting the theme by submitting a form</h1>
       <p>
@@ -213,8 +239,8 @@ export const {
           response-compliant payload
         </Link>
         . In this case, when a user clicks on the "Toggle Theme" button, a form
-        is submitted, which the action handler will reply to with the new theme
-        value, baked into a cookie.
+        is submitted to our <b>root</b> route. The action handler will reply to
+        with the new theme value, baked into a cookie.
       </p>
       <p>Here's the form:</p>
       <pre>
@@ -260,14 +286,18 @@ export const action: ActionFunction = async ({ request }) => {
       <h1>Serving the website</h1>
       <p>
         When a user visits the site, they will send to the server a cookie.
-        Here's how we can parse that cookie.
+        Here's how we can parse that cookie and set up our React context.
       </p>
       <pre>
-        {`import { Form, useLoaderData } from "remix";
+        {`// app/root.tsx
+
+import { Form, useLoaderData } from "remix";
+import { nullishStringToThemeName, ThemeProvider } from "~/theme";
+
 import type { LoaderFunction } from "remix";
-import { nullishStringToThemeName } from "~/theme";
 
 type Theme = "light" | "dark" | "christmas" | undefined;
+
 interface LoaderData {
   theme: Theme;
 }
@@ -279,46 +309,66 @@ export const loader: LoaderFunction = async ({
   const cookie = (await userPrefs.parse(cookieHeader)) || {};
   let themeName = nullishStringToThemeName(cookie.theme);
   return { themeName };
-};`}
-      </pre>
-      <h1>Setting up the theme toggle</h1>
-      <p>
-        We're going a bit full-circle here. Now that the loader function has
-        parsed our cookie, we can use the combination of the cookie value and
-        the OS's current theme to determine what value the toggle should fire
-        when clicked. In addition to submitting the form, we also optimistically
-        update the state locally so that the theme update is instantaneous.
-      </p>
-      <pre>
-        {`
-import { nullishStringToThemeName, useThemeName } from "~/theme";
+};
 
-export default function App() {
+export default function AppWithContexts() {
   const { themeName: cookieThemeName } = useLoaderData<LoaderData>();
 
-  const {
-    themeName,
-    setThemeName,
-    osThemeName,
-  } = useThemeName(cookieThemeName);
+  return (
+    <ThemeProvider themeName={cookieThemeName}>
+      <App />
+    </ThemeProvider>
+  );
+}
 
-  const setThemeTo = (themeName ?? osThemeName) === "dark" ? "light" : "dark";
+function App() {
+  return <html /> // etc...
+}`}
+      </pre>
+      <p>
+        By wrapping our app in <b>ThemeProvider</b> we can now call the hook{" "}
+        <b>useThemeInfo</b> anywhere in our app.
+      </p>
+      <h1>Setting up the theme toggle</h1>
+      <p>
+        We're going a bit full-circle here. Now that the root loader function
+        has parsed our cookie, we can use the combination of the cookie value
+        and the OS's current theme to determine what value our theme toggle
+        should pass when clicked.
+      </p>
+      <p>
+        By default, clicking the theme toggle will submit a form to our root
+        action handler, which will redirect the user to <b>/</b> and zap any
+        existing query parameters. To prevent this redirection, while still
+        allowing the server to update our cookie, we handle the form submission
+        entirely client-side. See the form handler and form below:
+      </p>
+      <pre>
+        {`// app/components/ThemeToggle.tsx
+
+import { nullishStringToThemeName, useThemeInfo } from "~/theme";
+
+export default function ThemeToggle() {
+  const { themeName, osThemeName, setThemeName } = useThemeInfo();
+  const submitForm = useSubmit();
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    const form = new FormData(e.target as HTMLFormElement);
+    e.preventDefault();
+    const form = new FormData(e.currentTarget);
     const newTheme = nullishStringToThemeName(form.get("theme"));
+
+    // Instantaneously update the theme, client-side
     setThemeName(newTheme);
+
+    // Submitting the form will update our cookie
+    submitForm(e.currentTarget, { replace: true });
   };
-  
+
   return (
-    <html lang="en" className={theme}>
-      <body>
-        <Form method="post" onSubmit={handleSubmit}>
-          <input type="hidden" name="theme" value={setThemeTo} />
-          <button type="submit">Toggle Theme</button>
-        </Form>
-      </body>
-    </html>
+    <Form method="post" onSubmit={handleSubmit}>
+      <input type="hidden" name="theme" value={setThemeTo} />
+      <button type="submit">Toggle Theme</button>
+    </Form>
   );
 }`}
       </pre>
