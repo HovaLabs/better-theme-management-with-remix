@@ -1,11 +1,11 @@
 import * as React from "react";
-import { useLocation, useSubmit, Form } from "remix";
+import { useLocation, useFetcher, Form } from "remix";
 
 import { nullishStringToThemeName, useThemeInfo } from "~/theme";
 
 export default function ThemeToggle() {
   const { themeName, osThemeName, setThemeName } = useThemeInfo();
-  const submitForm = useSubmit();
+  const fetcher = useFetcher();
   const location = useLocation();
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -13,12 +13,10 @@ export default function ThemeToggle() {
     const form = new FormData(e.currentTarget);
     const newTheme = nullishStringToThemeName(form.get("theme")?.toString());
     setThemeName(newTheme);
-    submitForm(e.currentTarget, { action: "/", replace: true });
+    fetcher.submit(e.currentTarget, { action: "/" });
   };
 
-  const url = `${location.pathname}${location.hash}${
-    location.search ? `?${new URLSearchParams(location.search)}` : ""
-  }`;
+  const url = `${location.pathname}${location.search}`;
 
   return (
     <div style={{ display: "flex" }}>

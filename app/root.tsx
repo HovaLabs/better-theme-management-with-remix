@@ -45,7 +45,10 @@ export const action: ActionFunction = async ({ request }) => {
   const cookieHeader = request.headers.get("Cookie");
   const cookie = (await userPrefs.parse(cookieHeader)) || {};
   const bodyParams = await request.formData();
+
+  // Could probably do a bit more sanitization on the url
   const url = bodyParams.get("url")?.toString() ?? "/";
+
   const theme = nullishStringToThemeName(bodyParams.get("theme")?.toString());
   cookie.theme = theme ?? null;
 
