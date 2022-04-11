@@ -124,17 +124,6 @@ export default function Index() {
         />
       </div>
       <h1>The CSS</h1>
-      <p>
-        In order to meet the requirements described above, we create two sets of
-        light and dark mode css variables. The first set is for handling default
-        behavior, and the second set is for handling when the user manually
-        selects a theme. In addition, we'll create one class per each custom
-        theme we want to support.
-      </p>
-      <h2>
-        CSS variable pattern<div>☀️ ➡ 🌑 ➡ ☀️ ➡ 🌑 ➡ 🎄</div>
-      </h2>
-
       <p>When defining our theme's css-variables, we follow this pattern:</p>
       <ol>
         <li>Default behavior</li>
@@ -176,6 +165,12 @@ export default function Index() {
 .christmas {
   --background: green;
   --onBackground: red;
+}
+
+/* Now we can consume the css variables
+html {
+  background: var(--background);
+  color: var(--onBackground);
 }`}
       </pre>
       <p>
@@ -185,7 +180,7 @@ export default function Index() {
         to do some work to allow the user to manually modify the theme, and for
         the site to remember this decision.
       </p>
-      <h2>Setting up the theme cookie</h2>
+      <h1>Setting up the theme cookie</h1>
       <p>
         We're going to use a cookie to "remember" if a browser has set a
         preferred theme. To set up our cookie we're going to use Remix's
@@ -206,7 +201,7 @@ export const userPrefs = createCookie("userPrefs", {
         <Link href="https://github.com/HovaLabs/react-theme-helper">
           react-theme-helper
         </Link>
-        . This package exposes several helper tools as follows:
+        . This package exposes several helper tools:
       </p>
       <pre>
         {`// app/theme.tsx
@@ -214,46 +209,57 @@ import createThemeHelper from "react-theme-helper";
 
 export const {
   nullishStringToThemeName,
+  ThemeProvider,
   useThemeInfo,
-  ThemeProvider
 } = createThemeHelper(["light", "dark", "christmas"]);`}
       </pre>
       <p>
-        <b>nullishStringToThemeName</b> coerces a string into one of our themes.
-        If the string doesn't match any of our theme values, it will return
-        undefined. We can use this function on the frontend and the backend.
+        <b>nullishStringToThemeName</b> coerces a string into one of our themes'
+        names. If the string doesn't match any of our theme name values, it will
+        return undefined. We will use this function on the frontend and the
+        backend.
+      </p>
+      <p>
+        <b>ThemeProvider</b> is a React component which provides theme
+        information via React context which will be consumed in{" "}
+        <b>useThemeInfo</b>.
       </p>
       <p>
         <b>useThemeInfo</b> is a react hook that will provide the user-selected
-        theme, the os's current theme, and a function to update the
-        user-selected theme.
-      </p>
-      <p>
-        <b>ThemeProvider</b> is a React component which provides theme context
-        and holds state for managing optimistic state UI updates.
+        theme, the os's current theme, and a function for optimistically
+        updating the user-selected theme.
       </p>
       <h1>Setting the theme by submitting a form</h1>
       <p>
-        Remix allows each route to have an action handler, which can reply with
-        a{" "}
-        <Link href="https://developer.mozilla.org/en-US/docs/Web/API/Response">
-          response-compliant payload
-        </Link>
-        . In this case, when a user clicks on the "Toggle Theme" button, a form
-        is submitted to our <b>root</b> route. The action handler will reply to
-        with the new theme value, baked into a cookie.
+        We're going to handle requests for updating the theme from our{" "}
+        <b>root</b>{" "}
+        <a href="https://remix.run/docs/en/v1/api/conventions#action">
+          action handler
+        </a>
+        . When a user clicks on the "Toggle Theme" button, a form is submitted
+        to our site's root route ("/"). The action handler will reply with the
+        new theme value, baked into a cookie. In order to preserve the browser's
+        current url, we need to submit it as a part of the form payload.
       </p>
       <p>Here's the form:</p>
       <pre>
         {`// app/root.tsx
-import { Form } from 'remix';
+import { Form, useLocation } from 'remix';
 
 ...
 
-<Form method="post">
-  <input type="hidden" name="theme" value="dark" />
-  <button type="submit">Toggle Theme</button>
-</Form>`}
+export default function App() {
+  const location = useLocation();
+  const url = \`\${location.pathname}\${location.search}\`;
+
+  return (
+    <Form method="post">
+      <input type="hidden" name="theme" value="dark" />
+      <input type="hidden" name="url" value={url} />
+      <button type="submit">Toggle Theme</button>
+    </Form>
+  );
+}`}
       </pre>
       <p>And here's the matching action handler:</p>
       <pre>
@@ -266,13 +272,15 @@ export const action: ActionFunction = async ({ request }) => {
   const cookie = (await userPrefs.parse(cookieHeader)) || {};
   const bodyParams = await request.formData();
 
+  const url = bodyParams.get("url")?.toString() ?? "/";
+
   // This utility function will coerce our theme
   // to a valid theme or undefined
   const theme = nullishStringToThemeName(bodyParams.get("theme"));
 
   cookie.theme = theme ?? null;
 
-  return redirect("/", {
+  return redirect(url, {
     headers: {
       "Set-Cookie": await userPrefs.serialize(cookie),
     },
@@ -341,34 +349,46 @@ function App() {
         By default, clicking the theme toggle will submit a form to our root
         action handler, which will redirect the user to <b>/</b> and zap any
         existing query parameters. To prevent this redirection, while still
-        allowing the server to update our cookie, we handle the form submission
-        entirely client-side. See the form handler and form below:
+        allowing the server to update our cookie, we use a pattern of capturing
+        and submitting the current url. Shoutout to Sergio Xalambrí for the{" "}
+        <Link href="https://sergiodxa.com/articles/redirect-to-the-original-url-inside-a-remix-action">
+          inspiration
+        </Link>
+        . Because we don't want updating our theme preference to be a navigating
+        action, we handle the form submission entirely client-side. See the form
+        handler and form below:
       </p>
       <pre>
         {`// app/components/ThemeToggle.tsx
+
+import * as React from "react";
+import { useLocation, useSubmit, Form } from "remix";
 
 import { nullishStringToThemeName, useThemeInfo } from "~/theme";
 
 export default function ThemeToggle() {
   const { themeName, osThemeName, setThemeName } = useThemeInfo();
-  const submitForm = useSubmit();
+  const submit = useSubmit();
+  const location = useLocation();
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const form = new FormData(e.currentTarget);
-    const newTheme = nullishStringToThemeName(form.get("theme"));
-
-    // Instantaneously update the theme, client-side
+    const newTheme = nullishStringToThemeName(form.get("theme")?.toString());
     setThemeName(newTheme);
-
-    // Submitting the form will update our cookie
-    submitForm(e.currentTarget, { replace: true });
+    submit(e.currentTarget, { action: "/", method: "post", replace: true });
   };
 
+  const url = \`\${location.pathname}\${location.search}\`;
+  const toggleThemeTo = (themeName ?? osThemeName) === "dark" ? "light" : "dark";
+
   return (
-    <Form method="post" onSubmit={handleSubmit}>
-      <input type="hidden" name="theme" value={setThemeTo} />
-      <button type="submit">Toggle Theme</button>
+    <Form method="post" replace onSubmit={handleSubmit}>
+      <input type="hidden" name="theme" value={toggleThemeTo} />
+      <input type="hidden" name="url" value={url} />
+      <button className="toggle" type="submit">
+        Toggle Theme
+      </button>
     </Form>
   );
 }`}
@@ -382,13 +402,31 @@ export default function ThemeToggle() {
       <pre>
         {`<Form method="post" onSubmit={handleSubmit}>
   <input type="hidden" name="theme" value="christmas" />
+  <input type="hidden" name="url" value={url} />
   <button type="submit">Christmas Theme</button>
 </Form>
 <Form method="post" onSubmit={handleSubmit}>
   <input type="hidden" name="theme" value="" />
+  <input type="hidden" name="url" value={url} />
   <button type="submit">Reset Theme</button>
 </Form>`}
       </pre>
+      <h1>What if we turn off javascript?</h1>
+      <p>
+        One of the great things about Remix is that the server-side
+        functionality continues to work, even if javascript is disabled. If you
+        disable javascript on this site, you'll notice that the theme toggle
+        works as expected. The only UX issues introduced by disabling javascript
+        are
+      </p>
+      <ul>
+        <li>
+          Toggling the theme uses navigation instead of javascript, which means
+          if you click the toggle 20 times, you'll get 20 identical routes added
+          to your browser history stack.
+        </li>
+        <li>Scroll position is not maintained on toggle or refresh.</li>
+      </ul>
       <h1>What's still missing</h1>
       <h2>The server doesn't know the OS's theme preference</h2>
       <p>
@@ -399,13 +437,6 @@ export default function ThemeToggle() {
         toggle to render content differently for light/dark mode and could not
         achieve the result with css media queries, we would need to hack a bit
         further.
-      </p>
-      <h2>We're relying on client hydration for our form</h2>
-      <p>
-        In order to prevent the client from getting redirected when submitting
-        the theme-toggle form, we're making the form submission on client side.
-        Ideally, we should instead submit a form instead of calling{" "}
-        <b>preventDefault</b>.
       </p>
       <h1>That's it</h1>
       <p>
