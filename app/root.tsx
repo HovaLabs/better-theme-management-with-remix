@@ -45,10 +45,11 @@ export const action: ActionFunction = async ({ request }) => {
   const cookieHeader = request.headers.get("Cookie");
   const cookie = (await userPrefs.parse(cookieHeader)) || {};
   const bodyParams = await request.formData();
+  const url = bodyParams.get("url")?.toString() ?? "/";
   const theme = nullishStringToThemeName(bodyParams.get("theme")?.toString());
   cookie.theme = theme ?? null;
 
-  return redirect("/", {
+  return redirect(url, {
     headers: {
       "Set-Cookie": await userPrefs.serialize(cookie),
     },
