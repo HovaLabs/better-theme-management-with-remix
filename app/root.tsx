@@ -23,7 +23,6 @@ import {
   nullishStringToThemeName,
 } from "~/theme";
 import ThemeToggle from "~/components/ThemeToggle";
-import * as constants from "~/constants";
 
 import type { LinksFunction, MetaFunction } from "remix";
 

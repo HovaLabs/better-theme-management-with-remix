@@ -1,11 +1,11 @@
 import * as React from "react";
-import { useLocation, useFetcher, Form } from "remix";
+import { useLocation, useSubmit, Form } from "remix";
 
 import { nullishStringToThemeName, useThemeInfo } from "~/theme";
 
 export default function ThemeToggle() {
   const { themeName, osThemeName, setThemeName } = useThemeInfo();
-  const fetcher = useFetcher();
+  const submit = useSubmit();
   const location = useLocation();
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -13,14 +13,14 @@ export default function ThemeToggle() {
     const form = new FormData(e.currentTarget);
     const newTheme = nullishStringToThemeName(form.get("theme")?.toString());
     setThemeName(newTheme);
-    fetcher.submit(e.currentTarget, { action: "/" });
+    submit(e.currentTarget, { action: "/", method: "post", replace: true });
   };
 
   const url = `${location.pathname}${location.search}`;
 
   return (
     <div style={{ display: "flex" }}>
-      <Form method="post" onSubmit={handleSubmit}>
+      <Form method="post" replace onSubmit={handleSubmit}>
         <input
           type="hidden"
           name="theme"
@@ -32,13 +32,13 @@ export default function ThemeToggle() {
         </button>
       </Form>
       <div style={{ width: 32 }} />
-      <Form method="post" onSubmit={handleSubmit}>
+      <Form method="post" replace onSubmit={handleSubmit}>
         <input type="hidden" name="theme" value="christmas" />
         <input type="hidden" name="url" value={url} />
         <button type="submit">Use Christmas Theme</button>
       </Form>
       <div style={{ width: 32 }} />
-      <Form method="post" onSubmit={handleSubmit}>
+      <Form method="post" replace onSubmit={handleSubmit}>
         <input type="hidden" name="theme" value={""} />
         <input type="hidden" name="url" value={url} />
         <button type="submit">Reset Theme Cookie</button>
